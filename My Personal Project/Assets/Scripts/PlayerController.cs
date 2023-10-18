@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {   
     private float speed = 10.0f;
-
+    private float zBound = 6;
     private Rigidbody playerRb;
 
-    private float zBound = 6;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,14 +17,26 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   // controll for arrow keys
+    {  
+        MovePlayer();
+        ConstrainPlayerPostition();
+    }
+
+    // Moves the player based on arrow key input
+    void MovePlayer() {
+         // controll for arrow keys
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         playerRb.AddForce(Vector3.forward * speed * verticalInput);
         playerRb.AddForce(Vector3.right * speed * horizontalInput);
+    }
 
-        if (transform.position.z < - zBound)
+    // Prevent the player from leaving the top or bottom of the screen
+
+    void ConstrainPlayerPostition() {
+         
+         if (transform.position.z < - zBound)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, -zBound);
         } 
